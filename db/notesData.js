@@ -4,13 +4,8 @@
 // ===============================================================================
 var notesArray = [
     {
-        title: "title1",
-        id: "343434",
-        message: "This is an example of a note that would be saved to the server."
-    },
-    {
+        id: 0,
         title: "title2",
-        id: "353535",
         message: "New note! Let's go!"
     }
 ];

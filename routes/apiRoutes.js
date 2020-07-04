@@ -4,7 +4,7 @@
 // These data sources hold arrays of information about the notes.
 // ===============================================================================
 
-var notesData = require("../db/notesData");
+var notesData = require("./db/notesData");
 
 // ===============================================================================
 // ROUTING
@@ -22,8 +22,29 @@ module.exports = function(app) {
   });
 
   app.post("/api/notes", function(req, res) {
-    notesData.push(req.body);
+    const newNote = {
+        id: parseInt(newNote[i]),
+        title: req.body.title,
+        message: req.body.message
+    }
+    if(!newNote.title || !newNote.message) {
+        return res.status(400).json({ msg: 'Must include a title and note message. Try again.'})
+    }
+    notesData.push(newNote);
     res.json(notesData);
+  });
+
+  app.delete("/api/notes/:id", function(req, res) {
+      const avail = notesData.some(notesData => notesData.id === parseInt(req.params.id));
+      
+      if (avail) {
+        res.json({
+            msg:'Note deleted',
+            notesData: notesData.filter(notesData => notesData.id !== parseInt(req.params.id))
+        });
+      } else {
+          res.status(400).json({msg: `No note found with the id of ${req.params.id}`});
+      }
   });
 
   // API POST Requests

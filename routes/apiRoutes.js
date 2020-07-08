@@ -4,7 +4,7 @@
 // These data sources hold arrays of information about the notes.
 // ===============================================================================
 
-var notesData = require("./db/notesData");
+var notesData = require("../db/notesData");
 
 // ===============================================================================
 // ROUTING

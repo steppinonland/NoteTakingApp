@@ -62,12 +62,13 @@ var id = notesData.length + 1;
   // })
   // delete request:
   app.delete("/api/notes/:id", function(req, res) {
-    var avail = notesData.some(notesData => notesData.id === parseInt(req.params.id));
+    var avail = notesData.find(notesData => notesData.id === parseInt(req.params.id));
     
     if (avail) {
+      notesData = notesData.filter(notesData => notesData.id !== parseInt(req.params.id))
       res.json({
           msg:'Note deleted',
-          notesData: notesData.filter(notesData => notesData.id !== parseInt(req.params.id))
+          notesData
       });
     } else {
         res.status(400).json({msg: `No note found with the id of ${req.params.id}`});

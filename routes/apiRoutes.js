@@ -3,8 +3,8 @@
 // We are linking our routes to a series of "data" sources.
 // These data sources hold arrays of information about the notes.
 // ===============================================================================
-
-var notesData = require("../db/notesData");
+const fs = require("fs");
+var notesData = require("../db/db.json");
 
 // ===============================================================================
 // ROUTING
@@ -20,6 +20,9 @@ module.exports = function(app) {
   app.get("/api/notes", function(req, res) {
     res.json(notesData);
   });
+// creating the id assignment function:
+var id = notesData.length + 1;
+
 
   // API POST Requests
   // Below code handles when a user submits a note and thus submits data to the server.
@@ -29,20 +32,37 @@ module.exports = function(app) {
   // Then the server saves the data to the notesArray)
   // ---------------------------------------------------------------------------
   app.post("/api/notes", function(req, res) {
-    const newNote = {
-        id: parseInt(newNote[i]),
-        title: req.body.title,
-        message: req.body.message
+    if(!req.body.title || !req.body.text) {
+      return res.status(400).json({ msg: 'Must include a title and note message. Try again.'})
     }
-    if(!newNote.title || !newNote.message) {
-        return res.status(400).json({ msg: 'Must include a title and note message. Try again.'})
-    }
-    notesData.push(newNote);
-    res.json(notesData);
+    // assign the ID number to the note
+    req.body.id = id++;
+    // push the message to the notes data
+    notesData.push(req.body)
+    // write the note to the JSON
+    fs.writeFile("./db/db.json", JSON.stringify(notesData), function (err) {
+      if (err) throw err
+    })
+    res.json(notesData)
   });
+
+  // updating the note:
+  // app.put("/api/notes/:id", function(req, res) {
+  //   var update = req.body.id;
+  //   update.save(function (err) {
+  //     if (err) {
+  //       return res.send('/notes'), {
+  //         errors: err.errors,
+  //         update: update
+  //       }
+  //     } else {
+  //       res.json(update);
+  //     }
+  //   })
+  // })
   // delete request:
   app.delete("/api/notes/:id", function(req, res) {
-    const avail = notesData.some(notesData => notesData.id === parseInt(req.params.id));
+    var avail = notesData.some(notesData => notesData.id === parseInt(req.params.id));
     
     if (avail) {
       res.json({

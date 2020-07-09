@@ -46,20 +46,6 @@ var id = notesData.length + 1;
     res.json(notesData)
   });
 
-  // updating the note:
-  // app.put("/api/notes/:id", function(req, res) {
-  //   var update = req.body.id;
-  //   update.save(function (err) {
-  //     if (err) {
-  //       return res.send('/notes'), {
-  //         errors: err.errors,
-  //         update: update
-  //       }
-  //     } else {
-  //       res.json(update);
-  //     }
-  //   })
-  // })
   // delete request:
   app.delete("/api/notes/:id", function(req, res) {
     var avail = notesData.find(notesData => notesData.id === parseInt(req.params.id));

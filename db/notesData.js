@@ -2,7 +2,7 @@
 // DATA
 // Below data will hold all of the notes.
 // ===============================================================================
-var notesArray = [
+var notesData = [
     {
         id: 0,
         title: "title2",
@@ -12,4 +12,4 @@ var notesArray = [
 
 
 // Note how we export the array. This makes it accessible to other files using require.
-module.exports = notesArray;
+module.exports = notesData;
